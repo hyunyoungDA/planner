@@ -1,6 +1,8 @@
 ## 캐시
 
-_pycache_
+__pycache__/
+**/__pycache__/
+*.py[cod]
 
 ## env
 
