@@ -1,31 +1,42 @@
-from pydantic import BaseModel, EmailStr
-from typing import List, Optional
-from models.events import Event # User에서 Event 참조 해야됨
+#from pydantic import BaseModel, EmailStr
+from pydantic import EmailStr
+from sqlmodel import SQLModel, Field, Relationship
+from typing import List, Optional, TYPE_CHECKING 
 
-class User(BaseModel):
-    email: EmailStr
+# User에서 Event 참조 해야됨
+# 순환 참조 방지 
+if TYPE_CHECKING:
+    from models.events import Event # 타입 검사용이므로 실행 시 import 안 됨 
+
+class User(SQLModel, table = True):
+    id: Optional[int] = Field(default = None, primary_key=True)
+    email: EmailStr = Field(unique = True, index = True, nullable = False)
     password: str
     # username: str
-    events: Optional[List[Event]] # Event 모델을 받음 
+    # user와 events 간의 관계 설정 
+    events: List["Event"] = Relationship(back_populates = 'user')
     
-    class Config:
-        schema_extra = {
+    model_config = {
+        "json_schema_extra":{
             "example":{
                 "email":"fastapi@spark.com",
                 "password":"strong!!",
                 "events":[],
             }
         }
+    }
         
-class UserSingIn(BaseModel):
+        
+class UserSingIn(SQLModel):
     email: EmailStr
     password: str
     
-    class Config:
-        schema_extra = {
+    model_config = {
+        "json_schema_extra":{
             "example":{
                 "email":"fastapi@spark.com",
                 "password":"strong!!",
                 "events":[],
             }
         }
+    }
