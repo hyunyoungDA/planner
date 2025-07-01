@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from jose import jwt 
 
+# 보통 .env에서 관리 
 SECRET_KEY = "your-secret-key"
 ALGORITHM = "HS256" # sign 알고리즘으로, 일반적으로 HS256 사용 
 ACCESS_TOKEN_EXPIRE_MINUTES = 30 # 토큰 만료 시간 
