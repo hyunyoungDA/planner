@@ -20,7 +20,7 @@ async def retrieve_all_events(session = Depends(get_session)) -> List[Event]:
     events = session.exec(statement).all()
     return events
 
-# 특정 ID의 이벤트 추출 라우팅
+# 특정 ID의 이벤트 추출 라우터
 @event_router.get("/{id}", response_model = Event)
 async def retrieve_event(id: int, session = Depends(get_session)) -> Event:
     event = session.get(Event, id)
@@ -32,7 +32,7 @@ async def retrieve_event(id: int, session = Depends(get_session)) -> Event:
         detail = "Event with supplied ID dose not exist."
     )
 
-# Body...?
+# 새로운 event 업로드 라우터 
 @event_router.post("/new")
 async def create_event(new_event: Event, session = Depends(get_session)) -> dict:
     session.add(new_event) # 세션에 pending 상태로 등록됨. 
